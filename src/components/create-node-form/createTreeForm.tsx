@@ -8,8 +8,8 @@ interface Props {
   activeNode: TreeNode | null;
 }
 
-export default function CreateTreeForm({ tree, setTree, activeNode }: Props) {
-  const [nodeName, setNodeName] = useState("");
+export default function CreateNodeForm({ tree, setTree, activeNode }: Props) {
+  const [nodeName, setNodeName] = useState<string>("");
 
   const createRoot = () => {
     const root: TreeNode = {

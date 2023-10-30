@@ -31,7 +31,7 @@ export default function TreeComponent({
     );
   };
 
-  if (!tree) return <div>Your tree is empty</div>;
+  if (!tree) return <div>Your tree is currently empty</div>;
 
   return <div>{renderTreeRecursively(tree.root)}</div>;
 }
