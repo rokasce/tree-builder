@@ -1,38 +1,37 @@
-import { Tree, TreeNode } from "../../models/node";
+import { Tree, TreeNode } from "../../models/tree";
 
 interface Props {
   tree: Tree | null;
-  setActiveNode: (activeNode: TreeNode) => void;
+  handleNodeClick: (activeNode: TreeNode) => void;
   activeNode: TreeNode | null;
 }
 
 export default function TreeComponent({
   tree,
   activeNode,
-  setActiveNode,
+  handleNodeClick,
 }: Props) {
-  const renderTree = (node: TreeNode) => {
+  const renderTreeRecursively = (node: TreeNode, level: number = 0) => {
+    const { title, children, id } = node;
+
     return (
       <div
-        key={node.title}
-        onClick={(e) => {
+        key={id}
+        onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
           e.stopPropagation();
-          setActiveNode(node);
+          handleNodeClick(node);
+        }}
+        style={{
+          marginLeft: `${level + 0.6}rem`,
         }}
       >
-        <span
-          style={{
-            color: activeNode?.title === node.title ? "red" : "",
-          }}
-        >
-          {node.title}
-        </span>
-        {node.children.map((child) => renderTree(child))}
+        <span className={activeNode?.id === id ? "active" : ""}>{title}</span>
+        {children.map((child) => renderTreeRecursively(child, level + 1))}
       </div>
     );
   };
 
   if (!tree) return <div>Your tree is empty</div>;
 
-  return <div>{renderTree(tree.root)}</div>;
+  return <div>{renderTreeRecursively(tree.root)}</div>;
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Tree, TreeNode } from "./models/node";
+import type { Tree, TreeNode } from "./models/tree";
 import CreateTreeForm from "./components/create-tree-form/createTreeForm";
 import TreeComponent from "./components/tree/tree";
 
@@ -8,7 +8,7 @@ export default function App() {
   const [tree, setTree] = useState<Tree | null>(null);
   const [activeNode, setActiveNode] = useState<TreeNode | null>(null);
 
-  const handleNodeClicked = (node: TreeNode) => {
+  const handleNodeClick = (node: TreeNode) => {
     if (!tree) {
       return;
     }
@@ -17,24 +17,16 @@ export default function App() {
   };
 
   return (
-    <div
-      className="App"
-      style={{
-        maxWidth: "600px",
-        marginInline: "auto",
-        border: "1px solid black",
-      }}
-    >
+    <div className="container">
       <h1>Create tree</h1>
       <CreateTreeForm tree={tree} setTree={setTree} activeNode={activeNode} />
 
-      <h2>Current Tree</h2>
+      <h3>Current Tree</h3>
 
       <TreeComponent
-        key={activeNode?.title}
         tree={tree}
         activeNode={activeNode}
-        setActiveNode={handleNodeClicked}
+        handleNodeClick={handleNodeClick}
       />
     </div>
   );

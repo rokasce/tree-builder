@@ -1,7 +1,6 @@
-import "./index.css";
 import { Dispatch, SetStateAction, useState } from "react";
 
-import { Tree, TreeNode } from "../../models/node";
+import { Tree, TreeNode } from "../../models/tree";
 
 interface Props {
   tree: Tree | null;
@@ -12,27 +11,44 @@ interface Props {
 export default function CreateTreeForm({ tree, setTree, activeNode }: Props) {
   const [nodeName, setNodeName] = useState("");
 
+  const createRoot = () => {
+    const root: TreeNode = {
+      title: nodeName,
+      children: [],
+      id: Date.now(),
+    };
+
+    setTree({
+      root,
+    });
+  };
+
+  const createChild = () => {
+    if (activeNode && tree) {
+      activeNode.children.push({
+        title: nodeName,
+        children: [],
+        id: Date.now(),
+      });
+
+      setTree({ ...tree });
+    }
+  };
+
   return (
     <div>
       <form
         onSubmit={(event) => {
           event.preventDefault();
 
+          if (!nodeName) {
+            return;
+          }
+
           if (!tree) {
-            const root: TreeNode = {
-              title: nodeName,
-              children: [],
-            };
-
-            setTree({
-              root,
-            });
+            createRoot();
           } else {
-            if (activeNode) {
-              activeNode?.children.push({ title: nodeName, children: [] });
-
-              setTree({ ...tree });
-            }
+            createChild();
           }
 
           setNodeName("");
